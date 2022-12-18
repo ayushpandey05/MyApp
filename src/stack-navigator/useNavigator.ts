@@ -4,7 +4,17 @@ const useNavigator = (initialState: any) => {
   const [navigatorState, setNavigatorState] = useState(initialState);
 
   const getNavigation = (screenIndex: number) => {
-    const push = (screenName: string, params: any) => {
+    const push = ({
+      screen: screenName,
+      params,
+      modal,
+      modalBackdrop,
+    }: {
+      screen: string;
+      params?: any;
+      modal?: boolean;
+      modalBackdrop?: string;
+    }) => {
       if (typeof screenName === 'string') {
         const currentStack = Array.isArray(navigatorState.stack)
           ? [...navigatorState.stack]
@@ -12,6 +22,8 @@ const useNavigator = (initialState: any) => {
         currentStack[screenIndex + 1] = {
           screenName,
           params,
+          modal,
+          modalBackdrop,
         };
 
         setNavigatorState((old: any) => ({
@@ -21,11 +33,19 @@ const useNavigator = (initialState: any) => {
       }
     };
 
-    const popAndPush = (
-      screenToPop: number = 0,
-      screenName: string,
-      params: any,
-    ) => {
+    const popAndPush = ({
+      screenToPop = 0,
+      screen: screenName,
+      params,
+      modal,
+      modalBackdrop,
+    }: {
+      screenToPop: number;
+      screen: string;
+      params?: any;
+      modal?: boolean;
+      modalBackdrop?: string;
+    }) => {
       let currentStack = Array.isArray(navigatorState.stack)
         ? [...navigatorState.stack]
         : [];
@@ -40,6 +60,8 @@ const useNavigator = (initialState: any) => {
         currentStack[screenIndex - (screenToPop - 1)] = {
           screenName,
           params,
+          modal,
+          modalBackdrop,
         };
         setNavigatorState((old: any) => ({
           ...old,
@@ -61,7 +83,17 @@ const useNavigator = (initialState: any) => {
       }
     };
 
-    const replace = (screenName: string, params: any) => {
+    const replace = ({
+      screen: screenName,
+      params,
+      modal,
+      modalBackdrop,
+    }: {
+      screen: string;
+      params: any;
+      modal?: boolean;
+      modalBackdrop?: string;
+    }) => {
       if (typeof screenName === 'string') {
         const currentStack = Array.isArray(navigatorState.stack)
           ? [...navigatorState.stack]
@@ -69,6 +101,8 @@ const useNavigator = (initialState: any) => {
         currentStack[screenIndex] = {
           screenName,
           params,
+          modal,
+          modalBackdrop,
         };
 
         setNavigatorState((old: any) => ({

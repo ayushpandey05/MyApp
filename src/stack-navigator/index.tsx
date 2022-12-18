@@ -1,10 +1,11 @@
 import {Column} from '@app/core';
-import React from 'react';
-import {useState} from 'react';
+import React, {memo} from 'react';
 import {useNavigator} from './useNavigator';
 import {navigationType} from './navigator-types';
 import {WithBackHandler} from './WithBackHandler';
 import {useNavigation} from './useNavigation';
+import {AnimatedView} from './AnimatedContainer/AnimatedView';
+import {AnimatedModal} from './AnimatedContainer/AnimatedModal';
 
 type visibleProp = () => boolean;
 type screenProp = (props: any) => JSX.Element;
@@ -21,16 +22,6 @@ interface stackNavigatorProps {
   screens: screensType;
 }
 
-const initialState = {
-  screen: '',
-};
-
-const getInitialState = (screen: string) => {
-  return {
-    screen,
-  };
-};
-
 const getInitialScreen = (screenName: string, screens: screensType) => {
   let initialScreen: any = {...screens[screenName], screenName};
   delete initialScreen?.screen;
@@ -38,9 +29,8 @@ const getInitialScreen = (screenName: string, screens: screensType) => {
   return initialScreen;
 };
 
-const createStackNavigator =
-  ({screens}: stackNavigatorProps) =>
-  (props: any) => {
+const createStackNavigator = ({screens}: stackNavigatorProps) =>
+  memo((props: any) => {
     const screenKeys = Object.keys(screens);
 
     const {navigatorState, getNavigation, getRoute} = useNavigator({
@@ -51,28 +41,28 @@ const createStackNavigator =
       <Column style={{flex: 1}}>
         {Array.isArray(navigatorState.stack) ? (
           navigatorState.stack.map((screen: any, screenIndex: number) => {
-            const {screenName} = screen || {};
+            const {screenName, modal, modalBackdrop} = screen || {};
             const ScreenComponent: any = WithBackHandler(
               screens[screenName].screen,
             );
 
             const navigation = getNavigation(screenIndex);
             const route = getRoute(screenIndex);
+
+            const AnimComponent = modal ? AnimatedModal : AnimatedView;
+
             return (
-              <Column
-                key={`container-${screenIndex}`}
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                  height: '100%',
-                  backgroundColor: 'white',
-                }}>
+              <AnimComponent
+                key={`anim-container-${screenIndex}`}
+                modalBackdrop={modalBackdrop}
+                screenIndex={screenIndex}>
                 <ScreenComponent
+                  {...props}
                   key={`screen-${screenIndex}`}
                   navigation={navigation}
                   route={route}
                 />
-              </Column>
+              </AnimComponent>
             );
           })
         ) : (
@@ -80,7 +70,7 @@ const createStackNavigator =
         )}
       </Column>
     );
-  };
+  });
 
 export {createStackNavigator, useNavigation};
 export type {navigationType};

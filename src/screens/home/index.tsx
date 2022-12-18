@@ -1,38 +1,44 @@
 import React from 'react';
 import {Column, Text} from '@app/core';
-import { navigationType, useNavigation } from '@app/stack-navigator';
-import { FC } from 'react';
-import { Header } from '@app/common/header';
+import {navigationType, useNavigation} from '@app/stack-navigator';
+import {FC} from 'react';
+import {Header} from '@app/common/header';
 
 interface Props {
-  navigation: navigationType,
-  route: any
+  navigation: navigationType;
+  route: any;
 }
 
 const Home: FC<Props> = ({route}) => {
-
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const pushOneScreen = () => {
-    navigation.push('login');
-    navigation.push('login');
+    navigation.push({
+      screen: 'login',
+    });
+    navigation.push({
+      screen: 'login',
+      modal: true,
+      modalBackdrop: 'rgba(0,0,0,0.3)',
+    });
   };
 
   const popTwoThenPush = () => {
-    navigation.popAndPush(2, 'login');
+    navigation.popAndPush({
+      screenToPop: 2,
+      screen: 'login',
+    });
   };
 
-  const goBack = navigation.goBack
+  const goBack = navigation.goBack;
 
-const popScreen = ()=>{
-  navigation.pop(2)
-}
+  const popScreen = () => {
+    navigation.pop(2);
+  };
 
   return (
-    <Column
-      style={{flex: 1}}
-    >
-      <Header title='Home Screen' />
+    <Column style={{flex: 1}}>
+      <Header title="Home Screen" />
       <Text style={{fontSize: 24, fontWeight: '700'}}>
         {route.screenIndex + 1}
       </Text>
@@ -43,10 +49,10 @@ const popScreen = ()=>{
       <Column touch onPress={popTwoThenPush}>
         <Text>Pop 2 Open 1 screen</Text>
       </Column>
-      <Column touch onPress={goBack} >
+      <Column touch onPress={goBack}>
         <Text>Go back</Text>
       </Column>
-      <Column touch onPress={popScreen} >
+      <Column touch onPress={popScreen}>
         <Text>Pop 2 screen</Text>
       </Column>
     </Column>
