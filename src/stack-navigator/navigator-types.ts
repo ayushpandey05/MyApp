@@ -23,6 +23,7 @@ interface navigationType {
 }
 
 interface routeType {
+  currentScreenIndex: number;
   screenIndex: number;
   screenName: string;
   params?: any;

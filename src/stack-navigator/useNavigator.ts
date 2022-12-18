@@ -144,7 +144,11 @@ const useNavigator = (initialState: any) => {
       ? [...navigatorState.stack]
       : [];
 
-    return {...currentStack[screenIndex], screenIndex};
+    return {
+      ...currentStack[screenIndex],
+      screenIndex,
+      currentScreenIndex: currentStack.length - 1,
+    };
   };
 
   return {navigatorState, getNavigation, getRoute};

@@ -41,7 +41,7 @@ const createStackNavigator = ({screens}: stackNavigatorProps) =>
       <Column style={{flex: 1}}>
         {Array.isArray(navigatorState.stack) ? (
           navigatorState.stack.map((screen: any, screenIndex: number) => {
-            const {screenName, modal, modalBackdrop} = screen || {};
+            const {screenName, modal} = screen || {};
             const ScreenComponent: any = WithBackHandler(
               screens[screenName].screen,
             );
@@ -54,8 +54,7 @@ const createStackNavigator = ({screens}: stackNavigatorProps) =>
             return (
               <AnimComponent
                 key={`anim-container-${screenIndex}`}
-                modalBackdrop={modalBackdrop}
-                screenIndex={screenIndex}>
+                route={route}>
                 <ScreenComponent
                   {...props}
                   key={`screen-${screenIndex}`}
