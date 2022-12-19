@@ -3,18 +3,16 @@ import {Column} from '@app/core';
 import {StyleSheet} from 'react-native';
 import {navigationType, routeType} from './navigator-types';
 import {useBackButton} from '@app/hooks';
-import { NavigationContext } from './useNavigation';
-
-interface Props {
-  children?: any;
-}
+import {NavigationContext} from './useNavigation';
+import {ComponentType} from '@app/types';
 
 const WithBackHandler =
-  (Component: (componentProps: any) => JSX.Element) =>
+  (Component: ComponentType) =>
   (props: {navigation: navigationType; route: routeType}) => {
     const {navigation, route} = props || {};
     const {screenIndex} = route || {};
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useBackButton(() => {
       navigation.goBack();
 
@@ -26,7 +24,7 @@ const WithBackHandler =
 
     return (
       <Column style={styles.container}>
-        <NavigationContext.Provider value={navigation} >
+        <NavigationContext.Provider value={navigation}>
           <Component {...props} />
         </NavigationContext.Provider>
       </Column>

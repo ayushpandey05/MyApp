@@ -6,13 +6,13 @@ import {WithBackHandler} from './WithBackHandler';
 import {useNavigation} from './useNavigation';
 import {AnimatedView} from './AnimatedContainer/AnimatedView';
 import {AnimatedModal} from './AnimatedContainer/AnimatedModal';
+import {ComponentType} from '@app/types';
 
 type visibleProp = () => boolean;
-type screenProp = (props: any) => JSX.Element;
 
 interface screensType {
   [screenName: string]: {
-    screen: screenProp;
+    screen: ComponentType;
     title: string;
     visible?: boolean | visibleProp;
   };

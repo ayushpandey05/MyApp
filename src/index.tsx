@@ -1,5 +1,5 @@
 import React from 'react';
-import {Column, Row} from '@app/core';
+import {Column} from '@app/core';
 import {createStackNavigator} from '@app/stack-navigator';
 import {Login} from '@app/screens/login';
 import {Signup} from '@app/screens/signup';
